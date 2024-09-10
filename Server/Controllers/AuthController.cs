@@ -42,41 +42,41 @@ namespace Server.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Register(string email, string password)
-        //{
-        //    // Kiểm tra tính hợp lệ của dữ liệu đăng ký
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser
-        //        {
-        //            UserName = email,
-        //            Email = email,
-        //            FullName = email,
-        //        };
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] RegisterDto register)
+        {
+            // Kiểm tra tính hợp lệ của dữ liệu đăng ký
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = register.Email,
+                    Email = register.Email,
+                    FullName = register.Email,
+                };
 
-        //        // Tạo người dùng mới
-        //        var result = await _userManager.CreateAsync(user, password);
-        //        if (result.Succeeded)
-        //        {
+                // Tạo người dùng mới
+                var result = await _userManager.CreateAsync(user, register.Password);
+                if (result.Succeeded)
+                {
 
-        //            return Ok(new { data = result, message = "Registration successful." });
-        //        }
+                    return Ok(new { data = result, message = "Registration successful." });
+                }
 
-        //        // Trả về lỗi nếu không thành công
-        //        return BadRequest(result.Errors);
-        //    }
+                // Trả về lỗi nếu không thành công
+                return BadRequest(result.Errors);
+            }
 
-        //    // Trả về lỗi nếu dữ liệu không hợp lệ
-        //    return BadRequest(ModelState);
-        //}
+            // Trả về lỗi nếu dữ liệu không hợp lệ
+            return BadRequest(ModelState);
+        }
 
 
         // POST: api/auth/login
         // Endpoint for user login.
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginDTO login)
+        public async Task<IActionResult> Login([FromBody]LoginDTO login)
         {
             if (ModelState.IsValid)
             {

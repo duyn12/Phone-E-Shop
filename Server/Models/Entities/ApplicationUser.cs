@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Models.Entities
 {
-    public class ApplicationUser : IdentityUser<int>, IHasId, IHasAudit, IHasSoftDelete
+    public class ApplicationUser : IdentityUser, IHasId, IHasAudit, IHasSoftDelete
     {
         public string? FullName { get; set; }
         public string? JobTitle { get; set; }
@@ -16,6 +16,7 @@ namespace Server.Models.Entities
         public string? Avatar { get; set; }
         public bool IsDefaultAdmin { get; set; } = false;
         public bool IsOnline { get; set; } = false;
+        public DateTime? LastLogin { get; set; }
 
 
         //IHasAudit

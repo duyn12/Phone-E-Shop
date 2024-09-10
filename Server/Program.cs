@@ -1,15 +1,16 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Server.Application;
-using Server.Common.AppSettings;
-using Server.Data;
-using Server.Models.Entities;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+
 using System.Text.Json.Serialization;
+using Server.Common.AppSettings;
+using Microsoft.OpenApi.Models;
+using Server.Data;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Server.Models.Entities;
+using Server.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         var identitySettings = builder.Configuration.GetSection(IdentitySettings.IdentitySettingsName).Get<IdentitySettings>();
         if (identitySettings != null)
@@ -48,28 +49,27 @@ builder.Services
         }
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddRoles<IdentityRole<int>>()
+    .AddRoles<IdentityRole>()
     .AddDefaultTokenProviders();
 
 //Congigure Authentication
-builder.Services.AddAuthentication(opt =>
+builder.Services.AddAuthentication(options =>
 {
-    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-            ValidAudience = builder.Configuration["JWT:ValidAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!))
-        };
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -83,15 +83,15 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-   {
-     new OpenApiSecurityScheme
-     {
-       Reference = new OpenApiReference
-       {
-         Type = ReferenceType.SecurityScheme,
-         Id = "Bearer"
-       }
-     },
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
             new string[] { }
         }
     });
@@ -99,16 +99,23 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services
     .Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
+builder.Services
+    .Configure<ApplicationConfiguration>(builder.Configuration.GetSection("ApplicationConfiguration"));
+builder.Services
+    .Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
 
 builder.Services
     .AddAllCustomServices();
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
+    var services = scope.ServiceProvider;
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     dbContext.Database.Migrate();
-    //await 
+
+    await DbInitializer.InitializeAsync(services);
 }
 
 // Configure the HTTP request pipeline.
@@ -136,9 +143,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.MapFallbackToFile("index.html");
 

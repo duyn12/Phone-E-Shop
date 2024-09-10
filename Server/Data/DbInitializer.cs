@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Server.Data;
+using Microsoft.Extensions.Options;
+using Server.Common.AppSettings;
+using Server.Data.System;
+using Server.Models.Entities;
 
-namespace Indotalent.Data
+namespace Server.Data
 {
     public static class DbInitializer
     {
@@ -16,23 +18,11 @@ namespace Indotalent.Data
             {
                 return;
             }
-
-            //var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-            //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-            //var applicationUserService = services.GetRequiredService<ApplicationUserService>();
-
-            //var creator = await applicationUserService.GetAll()
-            //    .Where(x => x.UserName == appConfig.Value.DefaultAdminEmail)
-            //    .FirstOrDefaultAsync();
-
-            //await DefaultCompany.GenerateAsync(companyService, currencyService, timeZoneService, countryService, creator);
-            //await DefaultRole.GenerateAsync(roleManager, appConfig);
-            //await DefaultUser.GenerateAsync(userManager, appConfig, fileImageService, companyService);
-
-            //if (appConfig.Value.IsDemoVersion)
-            //{
-                //await DemoBlogCategory.GenerateAsync(services);
-            //}
+            var appConfig = services.GetRequiredService<IOptions<ApplicationConfiguration>>();
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            await DefaultRole.GenerateAsync(roleManager, appConfig);
+            await DefaultUser.GenerateAsync(userManager, appConfig);
         }
 
         public static DateTime[] GetRandomDays(int year, int month, int count)

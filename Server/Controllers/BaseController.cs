@@ -28,15 +28,15 @@ namespace Server.Controllers
         //    return Convert.ToInt32(User.FindFirstValue(ClaimTypes.Sid));
         //}
 
-        //protected async Task SaveLog(AuditLog log)
-        //{
-        //    try
-        //    {
-        //        _dbContext.AuditLogs.Add(log);
-        //        await _dbContext.SaveChangesAsync();
-        //    }
-        //    catch { }
-        //}
+        protected async Task SaveLog(AuditLog log)
+        {
+            try
+            {
+                _dbContext.AuditLogs.Add(log);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch { }
+        }
         // Localize
         //protected string Localize(string culture, string name)
         //{

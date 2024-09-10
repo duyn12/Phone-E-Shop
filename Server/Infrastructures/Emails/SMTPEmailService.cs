@@ -1,6 +1,5 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Server.Common.AppSettings;
@@ -22,7 +21,7 @@ namespace Server.Infrastructures.Emails
             throw new NotImplementedException();
         }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task<bool> SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(_smtpConfiguration.UserName, _smtpConfiguration.UserName));
@@ -36,11 +35,18 @@ namespace Server.Infrastructures.Emails
 
             message.Body = bodyBuilder.ToMessageBody();
 
-            using var client = new SmtpClient();
-            await client.ConnectAsync(_smtpConfiguration.Host, _smtpConfiguration.Port, true);
-            await client.AuthenticateAsync(_smtpConfiguration.UserName, _smtpConfiguration.Password);
-            await client.SendAsync(message);
-            await client.DisconnectAsync(true);
+            try
+            {
+                using var client = new SmtpClient();
+                await client.ConnectAsync(_smtpConfiguration.Host, _smtpConfiguration.Port, true);
+                await client.AuthenticateAsync(_smtpConfiguration.UserName, _smtpConfiguration.Password);
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+                return true;
+            } catch
+            {
+                return false;
+            }
         }
 
         public Task SendPasswordResetCodeAsync(ApplicationUser user, string email, string resetCode)

@@ -1,0 +1,96 @@
+.sliding {
+    display: flex;
+    
+    .home {
+        height: 420px;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .1), 0 2px 6px 2px rgba(60, 64, 67, .15);
+        display: block;
+        margin-right: 15px;
+        overflow: hidden;
+        width: calc(100% - 280px);
+        .wrapper {
+            box-sizing: initial;
+            display: flex;
+            position: relative;
+            transition-property: transform;
+            width: 100%;
+            z-index: 1;
+            height: 84%;
+            .imageContainer {
+                flex-shrink: 0;
+                height: 100%;
+                position: relative;
+                transition-property: transform;
+                width: 100%;
+                img {
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                    border-radius: 5px;
+                }
+            }
+        }
+        
+        .gallery {
+            box-sizing: border-box;
+            height: 16%;
+            padding: 0 0 2.4px;
+            display: flex;
+            .slide {
+                box-sizing: initial;
+                display: flex;
+                height: 100%;
+                position: relative;
+                transition-property: transform;
+                z-index: 1;
+
+                span {
+                    align-items: center;
+                    background: #fff;
+                    border-radius: 0;
+                    color: #343a40;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: 12px;
+                    height: 100%;
+                    justify-content: center;
+                    line-height: 20px;
+                    padding: 0 10px;
+                    margin: 0;
+                    overflow: hidden;
+                    text-align: center;
+                    &:hover {
+                        background-color: #f3f4f6;
+                    }
+                }
+            }
+            
+            
+        }
+    }
+    
+    .right {
+        width: 300px;
+
+        .banner {
+            height: 376px;
+            max-width: 300px;
+            width: 100%;
+            a {
+                border-radius: 10px;
+                box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .1), 0 2px 6px 2px rgba(60, 64, 67, .15);
+                display: flex;
+                margin-bottom: 15.5px;
+                min-height: calc(33.33333% - 10px);
+                overflow: hidden;
+                width: 100%;
+                img {
+                    height: auto;
+                    max-width: 100%;
+                    float: left;
+                }
+            }
+        }
+    }
+}

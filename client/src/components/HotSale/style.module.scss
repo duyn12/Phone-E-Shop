@@ -1,0 +1,70 @@
+.boxsale {
+    border-radius: 16px;
+    margin: 0 0 15px;
+    min-height: 350px;
+    overflow: hidden;
+    padding: 2px;
+    background: linear-gradient(rgb(248, 62, 96), rgb(254, 80, 72)) 0% 0% / cover;
+    .title {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 5px 10px;
+        width: 100%;
+        .imgage {
+            img {
+                height: 60px;
+            }
+            .full {
+                width: 100%
+            }
+        }
+        .countdown {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 5px;
+            width: auto;
+            .title {
+                color: #fff;
+                font-size: 16px;
+                margin: 0;
+                font-weight: 600;
+                line-height: 1.125;
+            }
+            .time {
+                display: flex;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                li {
+                    color: #fff;
+                    display: flex;
+                    font-weight: 700;
+                    list-style-type: none;
+                    text-transform: uppercase;
+                    .time {
+                        background: #fff;
+                        border-radius: 50%;
+                        color: #222;
+                        font-size: 16px;
+                        font-weight: 700;
+                        height: 28px;
+                        padding: 4px 4px;
+                        text-align: center;
+                        width: 28px;
+                    }
+                    .separate {
+                        line-height: 26px;
+                        margin: 0 5px
+                    }
+                }
+            }
+        }
+        
+    }
+    .productsale {
+        padding: 5px;
+    }
+}

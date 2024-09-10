@@ -1,35 +1,64 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 import styles from "./style.module.scss";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { SetStateAction, useState } from "react";
 
 export default function SlidingImages() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const banners = [
     { banner: "samsung_banner.png", slide: "GALAXY Z FOLD6" },
     { banner: "samsung_banner.png", slide: "GALAXY Z FOLD6" },
   ];
-  const banneritem = [{ banneritems: "samsung_banner.png" },
+
+  const banneritem = [
+    { banneritems: "samsung_banner.png" },
     { banneritems: "right-banner-macbook.webp" },
-    { banneritems: "samsung_banner.png" }
+    { banneritems: "samsung_banner.png" },
   ];
+
+  const handleSlideClick = (index: SetStateAction<number>) => {
+    setActiveIndex(index);
+  };
+
   return (
     <div className={styles.sliding}>
       <div className={styles.home}>
-        <div className={styles.wrapper}>
+        <Carousel>
+          <CarouselContent className={styles.wrapper}>
             {banners.map((item, index) => (
-            <div key={index} className={styles.imageContainer}>
+              <CarouselItem
+                key={index}
+                className={`${styles.imageContainer} ${
+                  index === activeIndex ? styles.active : ""
+                }`}
+                onClick={() => handleSlideClick(index)} // Thêm sự kiện onClick ở đây
+              >
                 <img src={`/images/${item.banner}`} className={styles.banner} />
-            </div>
+              </CarouselItem>
             ))}
-        </div>
-        <div className={styles.gallery}>
-        {banners.map((item, index) => (
-          <div key={index} className={styles.slide}>
-            {/* <img src={`/images/${item.banner}`} className={styles.slide} /> */}
-            <span>{item.slide}</span>
-          </div>
-        ))}
-        </div>
-        
+          </CarouselContent>
+          {/* <div className={styles.gallery}>
+            {banners.map((item, index) => (
+              <div
+                key={index}
+                className={`${styles.slide} ${
+                  index === activeIndex ? styles.active : ""
+                }`}
+                onClick={() => handleSlideClick(index)}
+              >
+                <span>{item.slide}</span>
+              </div>
+            ))}
+          </div> */}
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
       <div className={styles.right}>
         <div className={styles.banner}>

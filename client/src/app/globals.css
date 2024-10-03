@@ -205,3 +205,10 @@ img, svg, video, canvas, audio, iframe, embed, object {
   border: 1px solid #d70018;
   color: #d70018;
 }
+/* admin */
+.header-setting {
+  display: none;
+}
+.setting.header-setting {
+  display: block;
+}

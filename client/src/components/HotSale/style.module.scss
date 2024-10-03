@@ -66,5 +66,10 @@
     }
     .productsale {
         padding: 5px;
+        max-height: 370px;
+        overflow: hidden;
+        &> div > div > div {
+            flex-wrap: nowrap;
+        }
     }
 }

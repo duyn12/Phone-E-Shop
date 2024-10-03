@@ -1,16 +1,7 @@
-import { Heart, Star } from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
 import * as React from "react";
 import styles from "./style.module.scss";
-import Image from "next/image";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import ProductItem from "../Featured/product";
-import { products } from "@/data";
+import ProductItem from "../Products";
 
 export default function HotSale() {
   return (
@@ -46,19 +37,7 @@ export default function HotSale() {
       </div>
       {/* Sản phẩm Sale */}
       <div className={styles.productsale}>
-        <div className={styles.list}>
-          <Carousel>
-            <CarouselContent>
-              {products.slice(0, 10).map((product, index) => (
-                <CarouselItem key={index} className="basis-1/5">
-                  <ProductItem product={product} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
+        <ProductItem product={[]}  />
       </div>
     </div>
   );

@@ -117,6 +117,12 @@
                         margin-right: 10px;
                         color: var(--red);
                     }
+                    &:hover .menu {
+                        visibility: visible;
+                        /* transform: scale(1); */
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
                     .authcontainer {
                         display: flex;
                         flex-direction: column;
@@ -133,12 +139,7 @@
                         }
                         
                     }
-                    &:hover .menu {
-                        visibility: visible;
-                        /* transform: scale(1); */
-                        transform: translateY(0);
-                        opacity: 1;
-                    }
+                    
                     
                     .cartIconMenu {
                         position: relative;

@@ -2,18 +2,28 @@
 "use client";
 
 import styles from "./style.module.scss";
-import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Filter,
   LogIn,
   MapPin,
   Phone,
   Search,
-  ShoppingBasket,
   UserPlus,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
+import { Cart } from "./NavigationBar/Cart";
+import { CartSheet } from "../Cart/CartSheet";
+import LoginPage from "@/app/home/(auth)/login/page";
 
 export default function Header() {
   const menuItems = [
@@ -68,9 +78,11 @@ export default function Header() {
           <div className={styles.container}>
             <div className={styles.left}>
               <div className="header-logo">
-                <a href="/home">
-                  {/* <img src="./assets/img/vy-food.png" alt="" className="header-logo-img" /> */}
-                  Logo
+                <a
+                  href="/home"
+                  className="bg-clip-text text-transparent bg-gradient-to-l from-[#B5292F] to-[#27272A] text-3xl font-bold"
+                >
+                  MobiTech
                 </a>
               </div>
             </div>
@@ -111,9 +123,7 @@ export default function Header() {
                   </div>
                   <ul className={styles.menu}>
                     <li>
-                      <a id="login" href="javascript:;">
-                        <LogIn /> <span>Đăng nhập</span>
-                      </a>
+                      <LoginPage />
                     </li>
                     <li>
                       <a id="signup" href="javascript:;">
@@ -122,12 +132,8 @@ export default function Header() {
                     </li>
                   </ul>
                 </li>
-                <li className={`${styles.item} open`}>
-                  <div className={styles.cartIconMenu}>
-                    <ShoppingBasket />
-                    <span className="count-product-cart">0</span>
-                  </div>
-                  <span>Giỏ hàng</span>
+                <li className={`${styles.item}`}>
+                  <CartSheet />
                 </li>
               </ul>
             </div>

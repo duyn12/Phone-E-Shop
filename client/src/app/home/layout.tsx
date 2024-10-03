@@ -12,7 +12,7 @@ import ChatLive from '@/components/Chat'
 export const metadata: Metadata = {
   title: {
     template: '%s ',
-    default: 'PhoneShop'
+    default: 'MobiTech'
   },
   description: 'Được tạo bởi Được Duy',
 }

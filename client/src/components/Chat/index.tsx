@@ -1,5 +1,6 @@
-'use client'
-import { SetStateAction, useState } from "react";
+'use client';
+
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 export default function ChatLive() {
@@ -17,12 +18,18 @@ export default function ChatLive() {
     },
   ]);
   const [newMessage, setNewMessage] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Mark the component as mounted after it's rendered on the client
+    setIsMounted(true);
+  }, []);
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
 
-  const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewMessage(e.target.value);
   };
 
@@ -38,7 +45,8 @@ export default function ChatLive() {
         },
       ]);
       setNewMessage("");
-      // Giả sử bạn muốn bot phản hồi tự động ngay lập tức
+
+      // Bot auto-response after 1.5 seconds
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -48,9 +56,14 @@ export default function ChatLive() {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           },
         ]);
-      }, 1500); // Bot phản hồi sau 1 giây
+      }, 1500);
     }
   };
+
+  // Render nothing on the server, and wait until the component mounts
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <>
@@ -63,7 +76,7 @@ export default function ChatLive() {
           <div className="px-4 py-3 border-b">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold text-zinc-800">
-                Chat với nhân viên tư vấn
+                Chat with Support Agent
               </h2>
               <X
                 className="hover:text-red-700 cursor-pointer"
@@ -71,10 +84,7 @@ export default function ChatLive() {
               />
             </div>
           </div>
-          <div
-            className="flex-1 p-3 overflow-y-auto flex flex-col space-y-2"
-            id="chatDisplay"
-          >
+          <div className="flex-1 p-3 overflow-y-auto flex flex-col space-y-2">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -96,8 +106,6 @@ export default function ChatLive() {
               <input
                 placeholder="Type your message..."
                 className="flex-1 p-2 border rounded-lg text-sm"
-                id="chatInput"
-                type="text"
                 value={newMessage}
                 onChange={handleInputChange}
                 onKeyPress={(e) => {
@@ -108,7 +116,6 @@ export default function ChatLive() {
               />
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm"
-                id="sendButton"
                 onClick={handleSendMessage}
               >
                 Send
@@ -123,11 +130,9 @@ export default function ChatLive() {
         }`}
         onClick={toggleChat}
       >
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-white">
-            Chat với nhân viên tư vấn
-          </h2>
-        </div>
+        <h2 className="text-lg font-semibold text-white">
+          Chat with Support Agent
+        </h2>
       </div>
     </>
   );

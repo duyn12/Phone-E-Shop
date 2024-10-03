@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Server.Models.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Models.Entities;
 
-public partial class AuditLog
+public class AuditLog : BaseEntity
 {
-    [Key]
-    public int Id { get; set; }
-
     [Required]
     [StringLength(100)]
     public string Username { get; set; }

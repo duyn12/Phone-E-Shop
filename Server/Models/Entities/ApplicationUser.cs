@@ -20,9 +20,9 @@ namespace Server.Models.Entities
 
 
         //IHasAudit
-        public int? CreatedByUserId { get; set; }
+        public string? CreatedByUserId { get; set; }
         public DateTime? CreatedAtUtc { get; set; }
-        public int? UpdatedByUserId { get; set; }
+        public string? UpdatedByUserId { get; set; }
         public DateTime? UpdatedAtUtc { get; set; }
 
         [NotMapped]

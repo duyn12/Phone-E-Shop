@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-
 using System.Text.Json.Serialization;
 using Server.Common.AppSettings;
 using Microsoft.OpenApi.Models;
@@ -96,6 +95,16 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        policy =>
+        {
+            policy.WithOrigins("*")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
 builder.Services
     .Configure<SmtpConfiguration>(builder.Configuration.GetSection("SmtpConfiguration"));
@@ -135,7 +144,7 @@ else
     });
 }
 //app.MapIdentityApi<ApplicationUser>();
-
+app.UseCors("AllowSpecificOrigins");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

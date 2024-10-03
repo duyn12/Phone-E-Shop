@@ -7,6 +7,7 @@ namespace Server.Models.Base
     {
         public BaseEntity()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.IsNotDeleted = true;
             this.CreatedAtUtc = DateTime.UtcNow;
         }

@@ -5,17 +5,18 @@
     position: sticky;
     top:0;
     z-index: 15;
+    height: 97px;
     .top {
         background-color: var(--red);
         height: 30px;
         width: 100%;
-        /* display: none; */
+         display: none; 
         .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 100%;
-            max-width: 1130px;
+            max-width: 1200px;
             padding: 0 10px;
             margin: 0 auto;
             .list {
@@ -40,7 +41,7 @@
             align-items: center;
             justify-content: space-between;
             height: 100%;
-            max-width: 1130px;
+            max-width: 1200px;
             margin: 0 auto;
             .center {
                 padding: 0 30px;
@@ -116,6 +117,12 @@
                         margin-right: 10px;
                         color: var(--red);
                     }
+                    &:hover .menu {
+                        visibility: visible;
+                        /* transform: scale(1); */
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
                     .authcontainer {
                         display: flex;
                         flex-direction: column;
@@ -132,12 +139,7 @@
                         }
                         
                     }
-                    &:hover .menu {
-                        visibility: visible;
-                        /* transform: scale(1); */
-                        transform: translateY(0);
-                        opacity: 1;
-                    }
+                    
                     
                     .cartIconMenu {
                         position: relative;
@@ -190,7 +192,7 @@
                         }
                         a {
                             font-size: 14px;
-                            display: inline-block;
+                            display: flex;
                             padding: 8px 20px;
                             color: var(--text-color);
                             width: 100%;
@@ -229,6 +231,7 @@
         background-color: var(--white);
         box-shadow: 0 3px 5px 0 rgb(0 0 0 / 10%);
         z-index: 4;
+        // display: none;
         .list {
             display: flex;
             height: 42px;
@@ -284,25 +287,12 @@
 }
 
 .container {
-    max-width: 1130px;
+    max-width: 1200px;
     padding: 0 10px;
     margin: 0 auto;
 }
 
 
-
-
-.filter-btn,.search-btn {
-    border: none;
-    outline: none;
-    font-size: 20px;
-    height: 40px;
-    padding: 0 15px;
-    color: var(--text-color);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
 
 
 

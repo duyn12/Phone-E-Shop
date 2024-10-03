@@ -187,9 +187,9 @@ namespace Server.Migrations
                     b.Property<DateTime?>("CreatedAtUtc")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("CreatedByUserId")
+                    b.Property<string>("CreatedByUserId")
                         .HasMaxLength(50)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(100)
@@ -261,9 +261,9 @@ namespace Server.Migrations
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("UpdatedByUserId")
+                    b.Property<string>("UpdatedByUserId")
                         .HasMaxLength(50)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(100)
@@ -288,16 +288,19 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.Entities.AuditLog", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Action")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("CreatedAtUtc")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -307,6 +310,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasMaxLength(45)
                         .HasColumnType("nvarchar(45)");
+
+                    b.Property<bool>("IsNotDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Service")
                         .IsRequired()
@@ -320,6 +326,12 @@ namespace Server.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()

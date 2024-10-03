@@ -4,9 +4,9 @@ namespace Server.Models.Base
 {
     public interface IHasAudit
     {
-        int? CreatedByUserId { get; set; }
+        string? CreatedByUserId { get; set; }
         DateTime? CreatedAtUtc { get; set; }
-        int? UpdatedByUserId { get; set; }
+        string? UpdatedByUserId { get; set; }
         DateTime? UpdatedAtUtc { get; set; }
 
 

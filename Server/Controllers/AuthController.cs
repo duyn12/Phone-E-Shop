@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -25,27 +23,22 @@ namespace Server.Controllers
         private readonly SMTPEmailService _emailService;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtConfiguration _jwtConfiguration;
-        private readonly IConfiguration _configuration;
         public AuthController(
             ApplicationDbContext dbContext,
             UserManager<ApplicationUser> userManager,
             SMTPEmailService emailService,
             RoleManager<IdentityRole> roleManager,
-            IOptions<JwtConfiguration> jwtConfiguration,
-            IConfiguration configuration) : base(dbContext)
+            IOptions<JwtConfiguration> jwtConfiguration) : base(dbContext)
         {
             _userManager = userManager;
             _emailService = emailService;
             _roleManager = roleManager;
             _jwtConfiguration = jwtConfiguration.Value;
-            _configuration = configuration;
-
         }
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterDto register)
         {
-            // Kiểm tra tính hợp lệ của dữ liệu đăng ký
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -55,7 +48,6 @@ namespace Server.Controllers
                     FullName = register.Email,
                 };
 
-                // Tạo người dùng mới
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
@@ -63,11 +55,9 @@ namespace Server.Controllers
                     return Ok(new { data = result, message = "Registration successful." });
                 }
 
-                // Trả về lỗi nếu không thành công
                 return BadRequest(result.Errors);
             }
 
-            // Trả về lỗi nếu dữ liệu không hợp lệ
             return BadRequest(ModelState);
         }
 
@@ -155,8 +145,6 @@ namespace Server.Controllers
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-
-
             // Update last login time for the user
             user.LastLogin = DateTime.UtcNow;
             await _dbContext.SaveChangesAsync();
@@ -185,7 +173,7 @@ namespace Server.Controllers
         public async Task<IActionResult> LogOut()
         {
             // Sign out the user (invalidate the JWT token)
-            await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+            //await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
 
             // Return OK response indicating successful logout
             return Ok();
@@ -196,8 +184,13 @@ namespace Server.Controllers
         {
             // Initialize a list to store claims
             var claims = new List<Claim>() {
+                // User
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                // Ramdom nonce
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                // User
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
             // Add specific permissions as claims
@@ -211,11 +204,8 @@ namespace Server.Controllers
             }
             catch
             {
-                // Return null if an error occurs during permission retrieval
                 return new List<Claim>();
             }
-
-            //// Return the list of claims
             return claims;
         }
 

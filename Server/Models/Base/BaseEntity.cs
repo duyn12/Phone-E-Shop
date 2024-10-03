@@ -18,8 +18,8 @@ namespace Server.Models.Base
 
         //IHasAudit
 
-        public int? CreatedByUserId { get; set; }
-        public int? UpdatedByUserId { get; set; }
+        public string? CreatedByUserId { get; set; }
+        public string? UpdatedByUserId { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? CreatedAtUtc { get; set; }
         [Column(TypeName = "datetime")]
@@ -33,7 +33,6 @@ namespace Server.Models.Base
         public string? CreatedAtString { get; set; }
         [NotMapped]
         public string? UpdatedAtString { get; set; }
-
 
         //IHasSoftDelete
         public bool IsNotDeleted { get; set; }

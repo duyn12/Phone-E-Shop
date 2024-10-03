@@ -11,7 +11,6 @@ namespace Server.Controllers
     public class BaseController : ControllerBase
     {
         protected readonly ApplicationDbContext _dbContext;
-        protected AppSetting _appSetting;
         public BaseController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -72,7 +71,7 @@ namespace Server.Controllers
 
             try
             {
-                //await SaveLog(log);
+                await SaveLog(log);
             }
             catch { }
 

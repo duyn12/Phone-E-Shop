@@ -10,6 +10,7 @@ using Server.Data;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Server.Models.Entities;
 using Server.Infrastructures;
+using Server.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +104,7 @@ builder.Services
 builder.Services
     .Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
 
+builder.Services.AddAllCustomServices();
 
 var app = builder.Build();
 
